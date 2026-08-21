@@ -1,0 +1,56 @@
+Switch_ADM_FIN_CORP_GUEST (Vlan20, 30, 50 and 60):
+
+Switch>enable
+Switch#conf t
+Switch(config)#hostname SW-VL_20_30_50_60
+
+SW-VL_20_30_50_60(config)#vlan 20
+SW-VL_20_30_50_60(config-vlan)#name ADMINISTRATIVE
+SW-VL_20_30_50_60(config-vlan)#exit
+SW-VL_20_30_50_60(config)#vlan 30
+SW-VL_20_30_50_60(config-vlan)#name FINANCIAL
+SW-VL_20_30_50_60(config-vlan)#exit
+SW-VL_20_30_50_60(config)#vlan 50
+SW-VL_20_30_50_60(config-vlan)#name WLAN-CORP
+SW-VL_20_30_50_60(config-vlan)#exit
+SW-VL_20_30_50_60(config)#vlan 60
+SW-VL_20_30_50_60(config-vlan)#name GUESTS
+SW-VL_20_30_50_60(config-vlan)#exit
+SW-VL_20_30_50_60(config)#vlan 99
+SW-VL_20_30_50_60(config-vlan)#name MANAGEMENT
+SW-VL_20_30_50_60(config-vlan)#exit
+
+SW-VL_20_30_50_60(config)#int range f0/1-11
+SW-VL_20_30_50_60(config-if-range)#switchport mode acc
+SW-VL_20_30_50_60(config-if-range)#switchport acc vlan 20
+SW-VL_20_30_50_60(config-if-range)#exit
+SW-VL_20_30_50_60(config)#int range f0/12-22
+SW-VL_20_30_50_60(config-if-range)#switchport mode acc
+SW-VL_20_30_50_60(config-if-range)#switchport acc vlan 30
+SW-VL_20_30_50_60(config-if-range)#exit
+SW-VL_20_30_50_60(config)#int f0/23
+SW-VL_20_30_50_60(config-if)#switchport mode acc
+SW-VL_20_30_50_60(config-if)#switchport acc vlan 50
+SW-VL_20_30_50_60(config-if)#exit
+SW-VL_20_30_50_60(config)#int f0/24
+SW-VL_20_30_50_60(config-if)#switchport mode acc
+SW-VL_20_30_50_60(config-if)#switchport acc vlan 60
+SW-VL_20_30_50_60(config-if)#exit
+
+SW-VL_20_30_50_60(config)#int g0/1
+SW-VL_20_30_50_60(config-if)#switchport trunk native vlan 99
+SW-VL_20_30_50_60(config-if)#switchport trunk allowed vlan 20,30,50,60,99
+SW-VL_20_30_50_60(config-if)#switchport mode trunk
+SW-VL_20_30_50_60(config-if)#exit
+
+SW-VL_20_30_50_60(config)#int vlan 99
+SW-VL_20_30_50_60(config-if)#ip add 192.168.99.20 255.255.255.0
+SW-VL_20_30_50_60(config-if)#no shutdown
+SW-VL_20_30_50_60(config-if)#exit
+
+SW-VL_20_30_50_60(config)#ip default-gateway 192.168.99.1
+SW-VL_20_30_50_60(config)#end
+SW-VL_20_30_50_60#write
+Building configuration...
+[OK]
+SW-VL_20_30_50_60#
