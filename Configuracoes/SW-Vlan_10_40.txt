@@ -1,0 +1,47 @@
+Switch_TI_Server (VLAN10 and VLAN40):
+
+Switch>enable
+Switch#conf t
+Switch(config)#hostname SW-VL10_40
+
+SW-VL10_40(config)#vlan 10
+SW-VL10_40(config-vlan)#name TI
+SW-VL10_40(config-vlan)#exit
+SW-VL10_40(config)#vlan 40
+SW-VL10_40(config-vlan)#name SERVERS
+SW-VL10_40(config-vlan)#exit
+SW-VL10_40(config)#vlan 99
+SW-VL10_40(config-vlan)#name MANAGEMENT
+SW-VL10_40(config-vlan)#exit
+
+SW-VL10_40(config)#int range f0/1-12
+SW-VL10_40(config-if-range)#switchport mode access
+SW-VL10_40(config-if-range)#switchport acc vlan 10
+SW-VL10_40(config-if-range)#exit
+SW-VL10_40(config)#int range f0/13-24
+SW-VL10_40(config-if-range)#switchport mode access
+SW-VL10_40(config-if-range)#switchport acc vlan 40
+SW-VL10_40(config-if-range)#exit
+SW-VL10_40(config)#int g0/1
+SW-VL10_40(config-if)#switchport mode trunk
+SW-VL10_40(config-if)#exit
+
+SW-VL10_40(config)#int g0/1
+SW-VL10_40(config-if)#switchport trunk native vlan 99
+SW-VL10_40(config-if)#switchport trunk allowed vlan 10,40,99
+SW-VL10_40(config-if)#switchport mode trunk
+SW-VL10_40(config-if)#exit
+
+SW-VL10_40(config)#int vlan 99
+SW-VL10_40(config-if)#
+
+SW-VL10_40(config-if)#ip add 192.168.99.10 255.255.255.0
+SW-VL10_40(config-if)#no shutdown
+SW-VL10_40(config-if)#exit
+SW-VL10_40(config)#ip default-gateway 192.168.99.1
+
+SW-VL10_40(config)#end
+SW-VL10_40#write
+Building configuration...
+[OK]
+SW-VL10_40#

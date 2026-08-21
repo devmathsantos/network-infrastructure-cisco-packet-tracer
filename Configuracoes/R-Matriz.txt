@@ -1,0 +1,32 @@
+Router-Matriz:
+
+Router>enable
+Router#conf t
+Router(config)#hostname R-Matriz
+
+R-Matriz(config)#int g0/0
+R-Matriz(config-if)#ip add 192.168.1.2 255.255.255.252
+R-Matriz(config-if)#no shutdown
+R-Matriz(config-if)#exit
+
+R-Matriz(config)#int s0/3/0
+R-Matriz(config-if)#ip address 10.0.0.1 255.255.255.252
+R-Matriz(config-if)#encapsulation frame-relay
+R-Matriz(config-if)#no shutdown
+R-Matriz(config-if)#exit
+
+! ! Rotas estáticas para a rede 172.16.0.0/24 via Serial (10.0.0.2)
+R-Matriz(config)#ip route 172.16.10.0 255.255.255.0 10.0.0.2
+R-Matriz(config)#ip route 172.16.20.0 255.255.255.0 10.0.0.2
+R-Matriz(config)#ip route 172.16.30.0 255.255.255.0 10.0.0.2
+R-Matriz(config)#ip route 172.16.50.0 255.255.255.0 10.0.0.2
+
+! Rotas estáticas para a rede 192.168.x.0/24 via GigabitEthernet (192.168.1.1)
+R-Matriz(config)#ip route 192.168.10.0 255.255.255.0 192.168.1.1
+R-Matriz(config)#ip route 192.168.20.0 255.255.255.0 192.168.1.1
+R-Matriz(config)#ip route 192.168.30.0 255.255.255.0 192.168.1.1
+R-Matriz(config)#ip route 192.168.40.0 255.255.255.0 192.168.1.1
+R-Matriz(config)#ip route 192.168.50.0 255.255.255.0 192.168.1.1
+
+R-Matriz(config)#end
+R-Matriz#

@@ -1,0 +1,41 @@
+Router> enable
+Router# configure terminal
+Router(config)#hostname R-Filial
+
+R-Filial(config)# interface GigabitEthernet0/0
+R-Filial(config-if)# no shutdown
+R-Filial(config-if)# exit
+
+! Configuração das subinterfaces (Router-on-a-Stick)
+R-Filial(config)# interface GigabitEthernet0/0.10
+R-Filial(config-subif)# encapsulation dot1Q 10
+R-Filial(config-subif)# ip address 172.16.10.1 255.255.255.0
+R-Filial(config-subif)# exit
+R-Filial(config)# interface GigabitEthernet0/0.20
+R-Filial(config-subif)# encapsulation dot1Q 20
+R-Filial(config-subif)# ip address 172.16.20.1 255.255.255.0
+R-Filial(config-subif)# exit
+R-Filial(config)# interface GigabitEthernet0/0.30
+R-Filial(config-subif)# encapsulation dot1Q 30
+R-Filial(config-subif)# ip address 172.16.30.1 255.255.255.0
+R-Filial(config-subif)# exit
+R-Filial(config)# interface GigabitEthernet0/0.50
+R-Filial(config-subif)# encapsulation dot1Q 50
+R-Filial(config-subif)# ip address 172.16.50.1 255.255.255.0
+R-Filial(config-subif)# exit
+
+R-Filial(config)# interface Serial0/3/1
+R-Filial(config-if)# ip address 10.0.0.2 255.255.255.252
+R-Filial(config-if)# encapsulation frame-relay
+R-Filial(config-if)# no shutdown
+R-Filial(config-if)# exit
+
+! Rotas estáticas para as redes da Matriz via Serial (10.0.0.1)
+R-Filial(config)# ip route 192.168.10.0 255.255.255.0 10.0.0.1
+R-Filial(config)# ip route 192.168.20.0 255.255.255.0 10.0.0.1
+R-Filial(config)# ip route 192.168.30.0 255.255.255.0 10.0.0.1
+R-Filial(config)# ip route 192.168.40.0 255.255.255.0 10.0.0.1
+R-Filial(config)# ip route 192.168.50.0 255.255.255.0 10.0.0.1
+
+R-Filial(config)# end
+R-Filial#

@@ -1,0 +1,87 @@
+Switch_Core-Matriz: 
+
+Switch>enable
+Switch#conf t
+Switch(config)#hostname SW-CORE
+
+SW-CORE(config)#int g1/0/1
+
+SW-CORE(config-if)#vlan 99
+SW-CORE(config-vlan)#name MANAGEMENT
+SW-CORE(config-vlan)#exit
+
+SW-CORE(config)#int g1/0/1
+SW-CORE(config-if)#switchport trunk native vlan 99
+SW-CORE(config-if)#exit
+SW-CORE(config)#int g1/0/2
+SW-CORE(config-if)#switchport trunk native vlan 99
+SW-CORE(config-if)#exit
+
+SW-CORE(config)#vlan 10
+SW-CORE(config-vlan)#name TI
+SW-CORE(config-vlan)#exit
+SW-CORE(config)#vlan 20
+SW-CORE(config-vlan)#name ADMINISTRATIVE
+SW-CORE(config-vlan)#exit
+SW-CORE(config)#vlan 30
+SW-CORE(config-vlan)#name FINANCIAL
+SW-CORE(config-vlan)#exit
+SW-CORE(config)#vlan 40
+SW-CORE(config-vlan)#name SERVERS
+SW-CORE(config-vlan)#exit
+SW-CORE(config)#vlan 50
+SW-CORE(config-vlan)#name WLAN-CORP
+SW-CORE(config-vlan)#exit
+SW-CORE(config)#vlan 60
+SW-CORE(config-vlan)#name GUESTS
+SW-CORE(config-vlan)#exit
+
+SW-CORE(config)#int g1/0/1
+SW-CORE(config-if)#switchport trunk allowed vlan 10,40,99
+SW-CORE(config-if)#switchport mode trunk
+SW-CORE(config-if)#exit
+SW-CORE(config)#int g1/0/2
+SW-CORE(config-if)#switchport trunk allowed vlan 20,30,50,60,99
+SW-CORE(config-if)#switchport mode trunk
+SW-CORE(config-if)#exit
+
+SW-CORE(config)#int g1/0/24
+SW-CORE(config-if)#no switchport
+SW-CORE(config-if)#ip add 192.168.1.1 255.255.255.252
+SW-CORE(config-if)#exit
+
+SW-CORE(config)#int vl 10
+SW-CORE(config-if)#ip add 192.168.10.1 255.255.255.0
+SW-CORE(config-if)#ip helper-address 192.168.40.10
+SW-CORE(config-if)#exit
+SW-CORE(config)#int vl 20
+SW-CORE(config-if)#ip add 192.168.20.1 255.255.255.0
+SW-CORE(config-if)#ip helper-address 192.168.40.10
+SW-CORE(config-if)#exit
+SW-CORE(config)#int vl 30
+SW-CORE(config-if)#ip add 192.168.30.1 255.255.255.0
+SW-CORE(config-if)#ip helper-address 192.168.40.10
+SW-CORE(config-if)#exit
+SW-CORE(config)#int vl 40
+SW-CORE(config-if)#ip add 192.168.40.1 255.255.255.0
+SW-CORE(config-if)#ip helper-address 192.168.40.10
+SW-CORE(config-if)#exit
+SW-CORE(config)#int vl 50
+SW-CORE(config-if)#ip add 192.168.50.1 255.255.255.0
+SW-CORE(config-if)#ip helper-address 192.168.40.10
+SW-CORE(config-if)#exit
+SW-CORE(config)#int vl 60
+SW-CORE(config-if)#ip helper-address 192.168.40.10
+SW-CORE(config-if)#ip add 192.168.60.1 255.255.255.0
+SW-CORE(config-if)#exit
+
+SW-CORE(config)#ip route 0.0.0.0 0.0.0.0 192.168.1.2
+SW-CORE(config)#end
+SW-CORE#
+%SYS-5-CONFIG_I: Configured from console by console
+
+SW-CORE#write
+Building configuration...
+Compressed configuration from 7383 bytes to 3601 bytes[OK]
+[OK]
+SW-CORE#
