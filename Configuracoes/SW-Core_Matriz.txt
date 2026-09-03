@@ -76,6 +76,39 @@ SW-CORE(config-if)#ip add 192.168.60.1 255.255.255.0
 SW-CORE(config-if)#exit
 
 SW-CORE(config)#ip route 0.0.0.0 0.0.0.0 192.168.1.2
+
+SW-CORE(config)#int vl 99
+SW-CORE(config-if)#ip add 192.168.99.1 255.255.255.0
+SW-CORE(config-if)#exit
+
+SW-CORE(config)#ip domain-name techsolutions.local
+SW-CORE(config)#username admin privilege 15 secret 123456
+SW-CORE(config)#crypto key generate rsa
+The name for the keys will be: SW-CORE.techsolutions.local
+Choose the size of the key modulus in the range of 360 to 4096 for your
+  General Purpose Keys. Choosing a key modulus greater than 512 may take
+  a few minutes.
+
+How many bits in the modulus [512]: 1024
+% Generating 1024 bit RSA keys, keys will be non-exportable...[OK]
+
+SW-CORE(config)#ip ssh version 2
+*Mar 1 1:23:36.562: %SSH-5-ENABLED: SSH 1.99 has been enabled
+
+SW-CORE(config)#line vty 0 15
+SW-CORE(config-line)#login local
+SW-CORE(config-line)#transport input ssh
+SW-CORE(config-line)#exit
+
+SW-CORE(config)#ip access-list standard SSH-ADMIN
+SW-CORE(config-std-nacl)#permit 192.168.10.0 0.0.0.255
+SW-CORE(config-std-nacl)#permit 192.168.99.0 0.0.0.255
+SW-CORE(config-std-nacl)#exit
+
+SW-CORE(config)#line vty 0 15
+SW-CORE(config-line)#access-class SSH-ADMIN in
+SW-CORE(config-line)#exit
+
 SW-CORE(config)#end
 SW-CORE#
 %SYS-5-CONFIG_I: Configured from console by console
