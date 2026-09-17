@@ -1,0 +1,72 @@
+ciscoasa>enable
+Password: 
+ciscoasa#conf t
+
+ciscoasa(config)#int g1/2
+ciscoasa(config-if)#nameif INSIDE
+INFO: Security level for "INSIDE" set to 0 by default.
+ciscoasa(config-if)#security-level 100
+ciscoasa(config-if)#ip add 192.168.20.1 255.255.255.0
+Waiting for the earlier webvpn instance to terminate...
+Previous instance shut down.Starting a new one
+ciscoasa(config-if)#no shutdown
+ciscoasa(config-if)#exit
+
+ciscoasa(config)#int g1/1
+ciscoasa(config-if)#nameif OUTSIDE
+INFO: Security level for "OUTSIDE" set to 0 by default.
+ciscoasa(config-if)#security-level 0
+ciscoasa(config-if)#ip add 192.168.250.2 255.255.255.252
+Waiting for the earlier webvpn instance to terminate...
+Previous instance shut down.Starting a new one
+ciscoasa(config-if)#no shutdown
+ciscoasa(config-if)#exit
+
+ciscoasa(config)#int g1/2
+ciscoasa(config-if)#ip add 192.168.40.1 255.255.255.0
+Waiting for the earlier webvpn instance to terminate...
+Previous instance shut down.Starting a new one
+ciscoasa(config-if)#no shutdown
+ciscoasa(config-if)#exit
+
+ciscoasa(config)#route OUTSIDE 192.168.10.0 255.255.255.0 192.168.250.1
+ciscoasa(config)#route OUTSIDE 192.168.20.0 255.255.255.0 192.168.250.1
+ciscoasa(config)#route OUTSIDE 192.168.30.0 255.255.255.0 192.168.250.1
+ciscoasa(config)#route OUTSIDE 192.168.50.0 255.255.255.0 192.168.250.1
+ciscoasa(config)#route OUTSIDE 192.168.60.0 255.255.255.0 192.168.250.1
+ciscoasa(config)#route OUTSIDE 0.0.0.0 0.0.0.0 192.168.250.1
+
+  --> Permitir passagem de solicitação DHCP 
+ciscoasa(config)#access-list OUTSIDE_IN extended permit udp host 192.168.10.1 host 192.168.40.10 eq 67
+ciscoasa(config)#access-list OUTSIDE_IN extended permit udp host 192.168.20.1 host 192.168.40.10 eq 67
+ciscoasa(config)#access-list OUTSIDE_IN extended permit udp host 192.168.30.1 host 192.168.40.10 eq 67
+ciscoasa(config)#access-list OUTSIDE_IN extended permit udp host 192.168.50.1 host 192.168.40.10 eq 67
+ciscoasa(config)#access-list OUTSIDE_IN extended permit udp host 192.168.60.1 host 192.168.40.10 eq 67
+
+  --> Libera acesso total a VLAN 10
+ciscoasa(config)#access-list OUTSIDE_IN extended permit ip 192.168.10.0 255.255.255.0 192.168.40.0 255.255.255.0
+
+  --> Regras ACL VLANs 20, 30, 50 (DNS, HTTP, FTP, E-mail)
+ciscoasa(config)#access-list OUTSIDE_IN extended permit udp 192.168.20.0 255.255.255.0 host 192.168.40.10 eq 53
+ciscoasa(config)#access-list OUTSIDE_IN extended permit tcp 192.168.20.0 255.255.255.0 host 192.168.40.10 eq 53
+ciscoasa(config)#access-list OUTSIDE_IN extended permit tcp 192.168.20.0 255.255.255.0 host 192.168.40.11 eq 80
+ciscoasa(config)#access-list OUTSIDE_IN extended permit tcp 192.168.20.0 255.255.255.0 host 192.168.40.11 eq 21
+ciscoasa(config)#access-list OUTSIDE_IN extended permit tcp 192.168.20.0 255.255.255.0 host 192.168.40.12 eq 25
+ciscoasa(config)#access-list OUTSIDE_IN extended permit tcp 192.168.20.0 255.255.255.0 host 192.168.40.12 eq 110
+
+ciscoasa(config)#access-list OUTSIDE_IN extended permit udp 192.168.30.0 255.255.255.0 host 192.168.40.10 eq 53
+ciscoasa(config)#access-list OUTSIDE_IN extended permit tcp 192.168.30.0 255.255.255.0 host 192.168.40.10 eq 53
+ciscoasa(config)#access-list OUTSIDE_IN extended permit tcp 192.168.30.0 255.255.255.0 host 192.168.40.11 eq 80
+ciscoasa(config)#access-list OUTSIDE_IN extended permit tcp 192.168.30.0 255.255.255.0 host 192.168.40.11 eq 21
+ciscoasa(config)#access-list OUTSIDE_IN extended permit tcp 192.168.30.0 255.255.255.0 host 192.168.40.12 eq 25
+ciscoasa(config)#access-list OUTSIDE_IN extended permit tcp 192.168.30.0 255.255.255.0 host 192.168.40.12 eq 110
+
+ciscoasa(config)#access-list OUTSIDE_IN extended permit udp 192.168.50.0 255.255.255.0 host 192.168.40.10 eq 53
+ciscoasa(config)#access-list OUTSIDE_IN extended permit tcp 192.168.50.0 255.255.255.0 host 192.168.40.10 eq 53
+ciscoasa(config)#access-list OUTSIDE_IN extended permit tcp 192.168.50.0 255.255.255.0 host 192.168.40.11 eq 80
+ciscoasa(config)#access-list OUTSIDE_IN extended permit tcp 192.168.50.0 255.255.255.0 host 192.168.40.11 eq 21
+ciscoasa(config)#access-list OUTSIDE_IN extended permit tcp 192.168.50.0 255.255.255.0 host 192.168.40.12 eq 25
+ciscoasa(config)#access-list OUTSIDE_IN extended permit tcp 192.168.50.0 255.255.255.0 host 192.168.40.12 eq 110
+
+ciscoasa(config)#access-group OUTSIDE_IN in interface outside
+ciscoasa(config)#exit
