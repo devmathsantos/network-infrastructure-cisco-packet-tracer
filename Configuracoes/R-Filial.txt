@@ -37,5 +37,8 @@ R-Filial(config)# ip route 192.168.30.0 255.255.255.0 10.0.0.1
 R-Filial(config)# ip route 192.168.40.0 255.255.255.0 10.0.0.1
 R-Filial(config)# ip route 192.168.50.0 255.255.255.0 10.0.0.1
 
+!! Rota estática para as rede do ISP via Serial (10.0.0.3)
+R-Filial(config)# ip route 8.8.8.0 255.255.255.0 10.0.0.3
+
 R-Filial(config)# end
 R-Filial#

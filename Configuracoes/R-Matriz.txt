@@ -10,7 +10,7 @@ R-Matriz(config-if)#no shutdown
 R-Matriz(config-if)#exit
 
 R-Matriz(config)#int s0/3/0
-R-Matriz(config-if)#ip address 10.0.0.1 255.255.255.252
+R-Matriz(config-if)#ip address 10.0.0.1 255.255.255.248
 R-Matriz(config-if)#encapsulation frame-relay
 R-Matriz(config-if)#no shutdown
 R-Matriz(config-if)#exit
@@ -27,6 +27,10 @@ R-Matriz(config)#ip route 192.168.20.0 255.255.255.0 192.168.1.1
 R-Matriz(config)#ip route 192.168.30.0 255.255.255.0 192.168.1.1
 R-Matriz(config)#ip route 192.168.40.0 255.255.255.0 192.168.1.1
 R-Matriz(config)#ip route 192.168.50.0 255.255.255.0 192.168.1.1
+R-Matriz(config)#ip route 192.168.60.0 255.255.255.0 192.168.1.1
+
+! Rota estática para a rede 8.8.8.0/24 via GigabitEthernet (10.0.0.3)
+R-Matriz(config)# ip route 8.8.8.0 255.255.255.0 10.0.0.3
 
 R-Matriz(config)#end
 R-Matriz#
