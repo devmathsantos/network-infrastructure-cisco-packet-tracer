@@ -17,6 +17,7 @@ SW-CORE(config)#int g1/0/2
 SW-CORE(config-if)#switchport trunk native vlan 99
 SW-CORE(config-if)#exit
 
+!! Criação das VLANs
 SW-CORE(config)#vlan 10
 SW-CORE(config-vlan)#name TI
 SW-CORE(config-vlan)#exit
@@ -50,6 +51,7 @@ SW-CORE(config-if)#no switchport
 SW-CORE(config-if)#ip add 192.168.1.1 255.255.255.252
 SW-CORE(config-if)#exit
 
+!! Configuração das interfaces (Inter-VLAN Routing)
 SW-CORE(config)#int vl 10
 SW-CORE(config-if)#ip add 192.168.10.1 255.255.255.0
 SW-CORE(config-if)#ip helper-address 192.168.40.10
@@ -75,12 +77,15 @@ SW-CORE(config-if)#ip helper-address 192.168.40.10
 SW-CORE(config-if)#ip add 192.168.60.1 255.255.255.0
 SW-CORE(config-if)#exit
 
+!! Configuração da Rota padrão
 SW-CORE(config)#ip route 0.0.0.0 0.0.0.0 192.168.1.2
 
+!! Configuração da VLAN Gerencia
 SW-CORE(config)#int vl 99
 SW-CORE(config-if)#ip add 192.168.99.1 255.255.255.0
 SW-CORE(config-if)#exit
 
+!! Configuração do Protocolo SSH
 SW-CORE(config)#ip domain-name techsolutions.local
 SW-CORE(config)#username admin privilege 15 secret 123456
 SW-CORE(config)#crypto key generate rsa
@@ -100,6 +105,7 @@ SW-CORE(config-line)#login local
 SW-CORE(config-line)#transport input ssh
 SW-CORE(config-line)#exit
 
+!! Configurações de Regras ACL
 SW-CORE(config)#ip access-list standard SSH-ADMIN
 SW-CORE(config-std-nacl)#permit 192.168.10.0 0.0.0.255
 SW-CORE(config-std-nacl)#permit 192.168.99.0 0.0.0.255

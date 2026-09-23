@@ -22,6 +22,7 @@ Previous instance shut down.Starting a new one
 ciscoasa(config-if)#no shutdown
 ciscoasa(config-if)#exit
 
+!! Configurando rota da interface OUTSIDE
 ciscoasa(config)#route OUTSIDE 192.168.10.0 255.255.255.0 192.168.250.1
 ciscoasa(config)#route OUTSIDE 192.168.20.0 255.255.255.0 192.168.250.1
 ciscoasa(config)#route OUTSIDE 192.168.30.0 255.255.255.0 192.168.250.1
@@ -29,17 +30,17 @@ ciscoasa(config)#route OUTSIDE 192.168.50.0 255.255.255.0 192.168.250.1
 ciscoasa(config)#route OUTSIDE 192.168.60.0 255.255.255.0 192.168.250.1
 ciscoasa(config)#route OUTSIDE 0.0.0.0 0.0.0.0 192.168.250.1
 
-  --> Permitir passagem de solicitação DHCP 
+!! Permitir passagem de solicitação DHCP 
 ciscoasa(config)#access-list OUTSIDE_IN extended permit udp host 192.168.10.1 host 192.168.40.10 eq 67
 ciscoasa(config)#access-list OUTSIDE_IN extended permit udp host 192.168.20.1 host 192.168.40.10 eq 67
 ciscoasa(config)#access-list OUTSIDE_IN extended permit udp host 192.168.30.1 host 192.168.40.10 eq 67
 ciscoasa(config)#access-list OUTSIDE_IN extended permit udp host 192.168.50.1 host 192.168.40.10 eq 67
 ciscoasa(config)#access-list OUTSIDE_IN extended permit udp host 192.168.60.1 host 192.168.40.10 eq 67
 
-  --> Libera acesso total as VLANs 10
+!! Libera acesso total as VLANs 10
 ciscoasa(config)#access-list OUTSIDE_IN extended permit ip 192.168.10.0 255.255.255.0 192.168.40.0 255.255.255.0
 
-  --> Regras ACL VLANs 20, 30, 50 (DNS, HTTP, FTP, E-mail)
+!! Regras ACL VLANs 20, 30, 50 (DNS, HTTP, FTP, E-mail)
 ciscoasa(config)#access-list OUTSIDE_IN extended permit udp 192.168.20.0 255.255.255.0 host 192.168.40.10 eq 53
 ciscoasa(config)#access-list OUTSIDE_IN extended permit tcp 192.168.20.0 255.255.255.0 host 192.168.40.10 eq 53
 ciscoasa(config)#access-list OUTSIDE_IN extended permit tcp 192.168.20.0 255.255.255.0 host 192.168.40.11 eq 80
@@ -61,16 +62,16 @@ ciscoasa(config)#access-list OUTSIDE_IN extended permit tcp 192.168.50.0 255.255
 ciscoasa(config)#access-list OUTSIDE_IN extended permit tcp 192.168.50.0 255.255.255.0 host 192.168.40.12 eq 25
 ciscoasa(config)#access-list OUTSIDE_IN extended permit tcp 192.168.50.0 255.255.255.0 host 192.168.40.12 eq 110
 
-  --> Permitir passagem de solicitação DHCP Filial
+!! Permitir passagem de solicitação DHCP Filial
 ciscoasa(config)#access-list OUTSIDE_IN extended permit udp host 172.16.10.1 host 192.168.40.10 eq 67
 ciscoasa(config)#access-list OUTSIDE_IN extended permit udp host 172.16.20.1 host 192.168.40.10 eq 67
 ciscoasa(config)#access-list OUTSIDE_IN extended permit udp host 172.16.30.1 host 192.168.40.10 eq 67
 ciscoasa(config)#access-list OUTSIDE_IN extended permit udp host 172.16.50.1 host 192.168.40.10 eq 67
 
-  --> Libera acesso total a VLAN 10 da Filial
+!! Libera acesso total a VLAN 10 da Filial
 ciscoasa(config)#access-list OUTSIDE_IN extended permit ip 172.16.10.0 255.255.255.0 192.168.40.0 255.255.255.0
 
-  --> Regras ACL VLANs 20, 30, 50 Filial (DNS, HTTP, FTP, E-mail)
+!! Regras ACL VLANs 20, 30, 50 Filial (DNS, HTTP, FTP, E-mail)
 ciscoasa(config)#access-list OUTSIDE_IN extended permit udp 172.16.20.0 255.255.255.0 host 192.168.40.10 eq 53
 ciscoasa(config)#access-list OUTSIDE_IN extended permit tcp 172.16.20.0 255.255.255.0 host 192.168.40.10 eq 53
 ciscoasa(config)#access-list OUTSIDE_IN extended permit tcp 172.16.20.0 255.255.255.0 host 192.168.40.11 eq 80
@@ -94,3 +95,11 @@ ciscoasa(config)#access-list OUTSIDE_IN extended permit tcp 172.16.50.0 255.255.
 
 ciscoasa(config)#access-group OUTSIDE_IN in interface outside
 ciscoasa(config)#exit
+
+ciscoasa#write memory
+Building configuration...
+Cryptochecksum: 32880024 21972167 49545dcc 0b5362f6
+
+6151  bytes copied in 2.643 secs (2327 bytes/sec)
+[OK]
+ciscoasa#

@@ -4,6 +4,7 @@ Switch>enable
 Switch#conf t
 Switch(config)#hostname SW-VL10_40
 
+!! Criação das VLANs
 SW-VL10_40(config)#vlan 10
 SW-VL10_40(config-vlan)#name TI
 SW-VL10_40(config-vlan)#exit
@@ -14,6 +15,7 @@ SW-VL10_40(config)#vlan 99
 SW-VL10_40(config-vlan)#name MANAGEMENT
 SW-VL10_40(config-vlan)#exit
 
+!! Configuração das interfaces
 SW-VL10_40(config)#int range f0/1-12
 SW-VL10_40(config-if-range)#switchport mode access
 SW-VL10_40(config-if-range)#switchport acc vlan 10
@@ -32,6 +34,7 @@ SW-VL10_40(config-if)#switchport trunk allowed vlan 10,40,99
 SW-VL10_40(config-if)#switchport mode trunk
 SW-VL10_40(config-if)#exit
 
+!! Configuração da VLAN Gerencia
 SW-VL10_40(config)#int vlan 99
 SW-VL10_40(config-if)#
 
@@ -40,6 +43,7 @@ SW-VL10_40(config-if)#no shutdown
 SW-VL10_40(config-if)#exit
 SW-VL10_40(config)#ip default-gateway 192.168.99.1
 
+!! Configuração do Protocolo SSH
 SW-VL10_40(config)#ip domain-name techsolutions.local
 SW-VL10_40(config)#username admin privilege 15 secret 123456
 SW-VL10_40(config)#crypto key generate rsa
@@ -68,7 +72,8 @@ SW-VL10_40(config)#line vty 0 15
 SW-VL10_40(config-line)#access-class SSH-ADMIN in
 SW-VL10_40(config-line)#exit
 
-SW-VL10_40(config)#end
+SW-VL10_40(config)#exit
+
 SW-VL10_40#write
 Building configuration...
 [OK]

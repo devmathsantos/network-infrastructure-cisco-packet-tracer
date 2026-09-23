@@ -4,6 +4,7 @@ Switch>enable
 Switch#conf t
 Switch(config)#hostname SW-VL_20_30_50_60
 
+!! Criação das VLANs
 SW-VL_20_30_50_60(config)#vlan 20
 SW-VL_20_30_50_60(config-vlan)#name ADMINISTRATIVE
 SW-VL_20_30_50_60(config-vlan)#exit
@@ -20,6 +21,7 @@ SW-VL_20_30_50_60(config)#vlan 99
 SW-VL_20_30_50_60(config-vlan)#name MANAGEMENT
 SW-VL_20_30_50_60(config-vlan)#exit
 
+!! Configuração das interfaces
 SW-VL_20_30_50_60(config)#int range f0/1-11
 SW-VL_20_30_50_60(config-if-range)#switchport mode acc
 SW-VL_20_30_50_60(config-if-range)#switchport acc vlan 20
@@ -43,6 +45,7 @@ SW-VL_20_30_50_60(config-if)#switchport trunk allowed vlan 20,30,50,60,99
 SW-VL_20_30_50_60(config-if)#switchport mode trunk
 SW-VL_20_30_50_60(config-if)#exit
 
+!! Configuração da VLAN Gerencia
 SW-VL_20_30_50_60(config)#int vlan 99
 SW-VL_20_30_50_60(config-if)#ip add 192.168.99.20 255.255.255.0
 SW-VL_20_30_50_60(config-if)#no shutdown
@@ -50,6 +53,7 @@ SW-VL_20_30_50_60(config-if)#exit
 
 SW-VL_20_30_50_60(config)#ip default-gateway 192.168.99.1
 
+!! Configuração do Protocolo SSH
 SW-VL_20_30_50_60(config)#ip domain-name techsolutions.local
 SW-VL_20_30_50_60(config)#username admin privilege 15 secret 123456
 SW-VL_20_30_50_60(config)#crypto key generate rsa
