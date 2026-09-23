@@ -109,6 +109,48 @@ SW-CORE(config)#line vty 0 15
 SW-CORE(config-line)#access-class SSH-ADMIN in
 SW-CORE(config-line)#exit
 
+SW-CORE(config)#ip access-list extended VLAN20-ADM
+SW-CORE(config-ext-nacl)#deny ip 192.168.20.0 0.0.0.255 192.168.10.0 0.0.0.255
+SW-CORE(config-ext-nacl)#deny ip 192.168.20.0 0.0.0.255 172.16.10.0 0.0.0.255
+SW-CORE(config-ext-nacl)#permit ip any any
+SW-CORE(config-ext-nacl)#exit
+SW-CORE(config)#int vlan 20
+SW-CORE(config-if)#ip access-group VLAN20-ADM in
+SW-CORE(config-if)#exit
+
+SW-CORE(config)#ip access-list extended VLAN30-FIN
+SW-CORE(config-ext-nacl)#deny ip 192.168.30.0 0.0.0.255 192.168.10.0 0.0.0.255
+SW-CORE(config-ext-nacl)#deny ip 192.168.30.0 0.0.0.255 172.16.10.0 0.0.0.255
+SW-CORE(config-ext-nacl)#permit ip any any
+SW-CORE(config-ext-nacl)#exit
+SW-CORE(config)#int vlan 30
+SW-CORE(config-if)#ip access-group VLAN30-FIN in
+SW-CORE(config-if)#exit
+
+SW-CORE(config)#ip access-list extended VLAN50-WLAN
+SW-CORE(config-ext-nacl)#deny ip 192.168.50.0 0.0.0.255 192.168.10.0 0.0.0.255
+SW-CORE(config-ext-nacl)#deny ip 192.168.50.0 0.0.0.255 172.16.10.0 0.0.0.255
+SW-CORE(config-ext-nacl)#exit
+SW-CORE(config)#int vlan 50
+SW-CORE(config-if)#ip access-group VLAN50-WLAN in
+SW-CORE(config-if)#exit
+
+SW-CORE(config)#ip access-list extended VLAN60-GUEST
+SW-CORE(config-ext-nacl)#deny ip 192.168.60.0 0.0.0.255 192.168.10.0 0.0.0.255
+SW-CORE(config-ext-nacl)#deny ip 192.168.60.0 0.0.0.255 192.168.20.0 0.0.0.255
+SW-CORE(config-ext-nacl)#deny ip 192.168.60.0 0.0.0.255 192.168.30.0 0.0.0.255
+SW-CORE(config-ext-nacl)#deny ip 192.168.60.0 0.0.0.255 192.168.50.0 0.0.0.255
+SW-CORE(config-ext-nacl)#
+SW-CORE(config-ext-nacl)#deny ip 192.168.60.0 0.0.0.255 172.16.10.0 0.0.0.255
+SW-CORE(config-ext-nacl)#deny ip 192.168.60.0 0.0.0.255 172.16.20.0 0.0.0.255
+SW-CORE(config-ext-nacl)#deny ip 192.168.60.0 0.0.0.255 172.16.30.0 0.0.0.255
+SW-CORE(config-ext-nacl)#deny ip 192.168.60.0 0.0.0.255 172.16.50.0 0.0.0.255
+SW-CORE(config-ext-nacl)#permit ip any any 
+SW-CORE(config-ext-nacl)#exit
+SW-CORE(config)#int vlan 60
+SW-CORE(config-if)#ip access-group VLAN60-GUEST in
+SW-CORE(config-if)#exit
+
 SW-CORE(config)#end
 SW-CORE#
 %SYS-5-CONFIG_I: Configured from console by console
