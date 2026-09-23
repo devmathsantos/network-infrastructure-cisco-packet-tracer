@@ -1,6 +1,6 @@
 Router> enable
 Router# configure terminal
-Router(config)#hostname R-Filial
+Router(config)# hostname R-Filial
 
 R-Filial(config)# interface GigabitEthernet0/0
 R-Filial(config-if)# no shutdown
@@ -10,18 +10,22 @@ R-Filial(config-if)# exit
 R-Filial(config)# interface GigabitEthernet0/0.10
 R-Filial(config-subif)# encapsulation dot1Q 10
 R-Filial(config-subif)# ip address 172.16.10.1 255.255.255.0
+R-Filial(config-subif)# ip helper-address 192.168.40.10
 R-Filial(config-subif)# exit
 R-Filial(config)# interface GigabitEthernet0/0.20
 R-Filial(config-subif)# encapsulation dot1Q 20
 R-Filial(config-subif)# ip address 172.16.20.1 255.255.255.0
+R-Filial(config-subif)# ip helper-address 192.168.40.10
 R-Filial(config-subif)# exit
 R-Filial(config)# interface GigabitEthernet0/0.30
 R-Filial(config-subif)# encapsulation dot1Q 30
 R-Filial(config-subif)# ip address 172.16.30.1 255.255.255.0
+R-Filial(config-subif)# ip helper-address 192.168.40.10
 R-Filial(config-subif)# exit
 R-Filial(config)# interface GigabitEthernet0/0.50
 R-Filial(config-subif)# encapsulation dot1Q 50
 R-Filial(config-subif)# ip address 172.16.50.1 255.255.255.0
+R-Filial(config-subif)# ip helper-address 192.168.40.10
 R-Filial(config-subif)# exit
 
 R-Filial(config)# interface Serial0/3/1
@@ -39,6 +43,32 @@ R-Filial(config)# ip route 192.168.50.0 255.255.255.0 10.0.0.1
 
 !! Rota estática para as rede do ISP via Serial (10.0.0.3)
 R-Filial(config)# ip route 8.8.8.0 255.255.255.0 10.0.0.3
+
+R-Filial(config)#ip access-list extended VLAN20-ADM
+R-Filial(config-ext-nacl)#deny ip 172.16.20.0 0.0.0.255 192.168.10.0 0.0.0.255
+R-Filial(config-ext-nacl)#deny ip 172.16.20.0 0.0.0.255 172.16.10.0 0.0.0.255
+R-Filial(config-ext-nacl)#permit ip any any
+R-Filial(config-ext-nacl)#exit
+R-Filial(config)#int g0/0.20
+R-Filial(config-subif)#ip access-group VLAN20-ADM in
+R-Filial(config-subif)#exit
+
+R-Filial(config)#ip access-list extended VLAN30-FIN
+R-Filial(config-ext-nacl)#deny ip 172.16.30.0 0.0.0.255 192.168.10.0 0.0.0.255
+R-Filial(config-ext-nacl)#deny ip 172.16.30.0 0.0.0.255 172.16.10.0 0.0.0.255
+R-Filial(config-ext-nacl)#permit ip any any
+R-Filial(config-ext-nacl)#exit
+R-Filial(config)#int g0/0.30
+R-Filial(config-subif)#ip access-group VLAN30-FIN in
+R-Filial(config-subif)#exit
+
+R-Filial(config)#ip access-list extended VLAN50-WLAN
+R-Filial(config-ext-nacl)#deny ip 172.16.50.0 0.0.0.255 192.168.10.0 0.0.0.255
+R-Filial(config-ext-nacl)#deny ip 172.16.50.0 0.0.0.255 172.16.10.0 0.0.0.255
+R-Filial(config-ext-nacl)#exit
+R-Filial(config)#int g0/0.50
+R-Filial(config-subif)#ip access-group VLAN50-WLAN in
+R-Filial(config-subif)#exit
 
 R-Filial(config)# end
 R-Filial#
